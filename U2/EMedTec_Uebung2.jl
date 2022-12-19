@@ -24,6 +24,12 @@ using Plots
 # ╔═╡ 84161cc9-6e23-4c30-8f0f-7884ffa7b69f
 using FFTW
 
+# ╔═╡ b9badbec-b53d-4621-b37e-24e1bc3a19fe
+using JLD2
+
+# ╔═╡ f2c8407d-02d9-4d98-a3af-66cb16dadbac
+
+
 # ╔═╡ fff659d2-1a29-4cbc-9dd8-ae9a99625a7c
 md"""
 $logo 
@@ -42,6 +48,7 @@ md"""
 * 👨‍🏫 [Jonas Schumacher, M. Sc.] (mailto:jonas.schumacher@imte.fraunhofer.de)
 * 👨‍🏫 [Justin Ackers, M. Sc.] (mailto:justin.ackers@imte.fraunhofer.de)
 
+## Hausaufgabe: Youran Wang-719511-Gruppe:RAS_2
 # Übungsblatt 2
 """
 
@@ -104,67 +111,8 @@ Wenn Sie den Index der Frequenzen herausgefunden haben, nutzen Sie entweder Ihr 
 # ╔═╡ 00de484e-e151-459b-9b1a-a3bb10633ec2
 info(md"Um die Amplitude logarithmisch zu plotten, können Sie entweder den Logarithmus selber berechnen, oder Sie übergeben das Attribut `yaxis=:log10` an die Plot-Funktion.")
 
-# ╔═╡ 156b225a-419b-4e79-aab2-39853ae72b68
-indizes = [6,8,22]
-
-# ╔═╡ 0fbbaa4b-5107-487d-bfaa-392fdf765f55
-begin
-
-if !@isdefined(indizes)
-	Markdown.MD(Markdown.Admonition("danger", "Variable nicht definiert", [md"`indizes` scheint nicht definiert zu sein, ist vielleicht in der Definition ein Fehler aufgetreten?"]))
-elseif ismissing(indizes)
-	keep_working(md"Weisen Sie der Variable `indizes` einen Vektor mit den Indizes der Bestandteile des Signals zu.")
-elseif !(indizes isa Vector)
-	keep_working(md"`indizes` ist kein Vektor.")
-elseif indizes != [6,8,22]
-	keep_working(md"Das sind nicht die korrekten Indizes, prüfen Sie bitte Ihren Code")
-else
-	correct(md"Das sieht gut aus, auf zur nächsten Aufgabe!")
-end
-end
-
-# ╔═╡ 81bef4bd-b950-4c43-8761-e73a44431d4e
-freqs = [25,35,105]
-
-# ╔═╡ 3efd7fef-910b-400d-a656-62fe2a15fc4e
-begin
-
-if !@isdefined(freqs)
-	Markdown.MD(Markdown.Admonition("danger", "Variable nicht definiert", [md"`freqs` scheint nicht definiert zu sein, ist vielleicht in der Definition ein Fehler aufgetreten?"]))
-elseif ismissing(freqs)
-	keep_working(md"Weisen Sie der Variable `freqs` einen Vektor mit den Frequenzen der Bestandteile des Signals zu.")
-elseif !(freqs isa Vector)
-	keep_working(md"`freqs` ist kein Vektor.")
-elseif !isapprox(freqs,[25,35,105])
-	keep_working(md"Das sind nicht die korrekten Frequenzen, prüfen Sie bitte Ihren Code!")
-else
-	correct(md"Das könnte soweit stimmen, auf zur nächsten Aufgabe!")
-end
-end
-
 # ╔═╡ 2708ad16-add7-4d31-a71c-90682f09ba2a
 md"🎓 Extrahieren Sie nun die Amplituden und die Phasen der Bestandteile des Signal und stellen Sie eine Reihenzusammensetzung nach dem Schema der letzten Woche auf. Berechnen Sie die Funktionswerte dieser Reihenzusammensetzung für die Zeitachse `t`, die Sie oben bereits definiert haben und stellen Sie sie zusammen mit dem unbekannten Signal in derselben Darstellung dar. Wenn Sie alles richtig gemacht haben, sollten die beiden Graphen genau übereinander liegen."
-
-# ╔═╡ 4b8641e0-c39c-443b-8681-210d0667d8c4
-amps = [66+2/3,62.5,20]/100
-
-# ╔═╡ 7ed7ab14-072b-430f-9dcc-f0d3e84017d5
-begin
-
-if !@isdefined(amps)
-	Markdown.MD(Markdown.Admonition("danger", "Variable nicht definiert", [md"`amps` scheint nicht definiert zu sein, ist vielleicht in der Definition ein Fehler aufgetreten?"]))
-elseif ismissing(amps)
-	keep_working(md"Weisen Sie der Variable `amps` einen Vektor mit den Amplituden der Bestandteile des Signals zu.")
-elseif !(amps isa Vector)
-	keep_working(md"`amps` ist kein Vektor.")
-elseif isapprox(amps,[66+2/3,62.5,20], atol=0.1)
-	keep_working(md"Sie haben die richtigen Amplituden gefunden, allerdings stimmt die Skalierung noch nicht. Überlegen Sie, mit welchem Wert Sie Ihre Amplituden noch skalieren müssen, um auf den richtigen Wert zu kommen!")
-elseif isapprox(amps, [66+2/3,62.5,20]/100, atol=0.001)
-	correct(md"Das stimmt! Auf zur nächsten Aufgabe!")
-else 
-	keep_working(md"Das sind noch nicht die richtigen Amplituden, prüfen Sie bitte noch einmal Ihren Code!")
-end
-end
 
 # ╔═╡ 941dbf87-c50c-4666-80b8-40fc3e0e39e5
 phases = [-π/2,0,π/2]
@@ -188,15 +136,6 @@ end
 # ╔═╡ d0e09c1c-21b3-4c5e-9b46-a2bdc3ac90fb
 hint(md"Die Reihendarstellung sollte diese Form annehmen: $\sum_i A_i \cdot \cos(2\pi f_it + \phi_i)$")
 
-# ╔═╡ 63160cdf-debc-448a-a5c7-5ccebebf91b8
-
-
-# ╔═╡ 24cd3f12-17a4-4ffd-a799-a5e6166a9703
-
-
-# ╔═╡ e1812c5c-0541-4dfe-9725-df527b134dc5
-
-
 # ╔═╡ 8c04101a-54e1-4c1e-9e38-bdbc19ac6e0a
 md"## Aufgabe 2 (Zulassungsaufgabe): Code lesen und verstehen"
 
@@ -216,13 +155,13 @@ md"Das zugehörige Amplituden-Spektrum sieht folgendermaßen aus:"
 md"Warum sieht das Spektrum hier anders aus, als in Aufgabe 1, obwohl das Signal dieselben Frequenzen beinhaltet? Wie nennt man diesen Effekt?"
 
 # ╔═╡ 8e253fba-d4a4-4ce0-98be-a94b6e1c54d7
-antwort_2_1 = ""
+antwort_2_1 = "Wir nennen es 'Spectral Leakage'.  Es gibt einige Spektrum Frequenzen, die im Ausgangssignal gar nicht vorhanden sind, sondern es kommt zu einer Verschmierung der Signale über einen weiteren Bereich im Spektrum. " 
 
 # ╔═╡ 47923c46-4f7f-4468-ae06-9c588a6a2d59
 md"Der Plot hier drüber zeigt eine detailliertere Darstellung des Spektrums. Beschreiben Sie welche Methode angewendet wurde, um diese Darstellung zu berechnen:"
 
 # ╔═╡ 7c859cad-2317-4fc4-950a-349bf51e4f29
-antwort_2_2 = ""
+antwort_2_2 = "Zero-Padding。 einfach Nullen an das zu analysierende Signal"
 
 # ╔═╡ 800bdedf-2da8-4eb0-9533-8d4008225fa4
 md"Vergleichen Sie die Höhe der beiden größten Peaks in `unknownSpectrum2` und `improvedSpectrum`. Was fällt Ihnen auf? Welche Konsequenzen hat dies für das Bestimmen der Signalbestandteile?"
@@ -243,11 +182,11 @@ Für die schnelle und effiziente Berechnung dieser Gleichung für alle `k` benut
 Implementieren Sie dafür eine Funktion `myDFT(x,k)`, die den Wert der DFT X[k] eines Eingabesignals x für einen bestimmten Index k berechnet:
 """
 
-# ╔═╡ 589ef964-b782-4684-b6fb-097180fb9ed9
-
-
 # ╔═╡ c015b9c8-e2ac-4663-8506-a3f64e1f5681
-
+function myDFT(x,k)
+  DFT = 
+  return DFT
+end
 
 # ╔═╡ 93c43ca3-2349-4113-97ac-103f2227dc89
 md"## Aufgabe K2.2 (2 Klausurpunkte): EKG-Ableitungen umrechnen"
@@ -255,14 +194,41 @@ md"## Aufgabe K2.2 (2 Klausurpunkte): EKG-Ableitungen umrechnen"
 # ╔═╡ 790e3621-d393-4f41-8699-a490f820e21a
 md"Laden Sie die Daten aus der Datei `EKG-Daten-Uebung2.jld2` ein. Dort finden Sie EKG-Daten für die drei Ableitungen nach Einthoven, die mit 500 Hz abgetastet wurden. Berechnen Sie nach den Formeln aus der Vorlesung die Ableitungen nach Goldberger und stellen Sie alle 6 Zeitsignale in einer geeigneten Darstellung dar. Achten Sie auf die korrekte Beschriftung der Daten und Achsen!"
 
-# ╔═╡ 51444c9d-0094-4d95-bc6c-7af71de5adef
-
-
 # ╔═╡ b9e0194f-2318-439e-b060-ea9beabd870d
+data=load("EKG-Daten-Uebung2.jld2")
 
+# ╔═╡ 8bd8a074-e7c4-4c5c-822f-31ece229db3d
+length(data["Ui"])
 
-# ╔═╡ 4107ee94-1245-4447-b339-731275f77634
+# ╔═╡ 9780d677-990b-4f1d-8fdb-ff245cfe93b0
+x=range(0,5,5000)
 
+# ╔═╡ 24d67c06-df55-48df-91f6-8504c1053f09
+UavL=(data["Ui"]-data["Uiii"])*0.5
+
+# ╔═╡ 8a8e8af6-de00-4433-afce-16980169f823
+UavR=(data["Ui"]+data["Uii"])*-0.5
+
+# ╔═╡ 59cc9645-d4d6-472f-a36c-b17f0f4c7055
+UavF=(data["Uii"]+data["Uiii"])*0.5
+
+# ╔═╡ 48ce278f-2556-458e-8412-7f2c95ffe28c
+plot(x,data["Ui"],title="Ableitungen Ui nach Einthoven",xlabel="t / s",ylabel="Potentialdifferenz / mV", label="Ui")
+
+# ╔═╡ cea11ce5-dbab-4f19-a1db-f743d32c98df
+plot(x,data["Uii"],title="Ableitungen Uii nach Einthoven",xlabel="t / s",ylabel="Potentialdifferenz / mV", label="Uii")
+
+# ╔═╡ 301c5b78-aee9-4139-8731-deb31ca33315
+plot(x,data["Uiii"],title="Ableitungen Uiii nach Einthoven",xlabel="t / s",ylabel="Potentialdifferenz / mV", label="Uiii")
+
+# ╔═╡ 9cf4ca75-5b6e-4bdc-8891-66eabeba3ec3
+plot(x,UavL,title="Ableitungen UavL nach Goldberger",xlabel="t / s",ylabel="Potentialdifferenz / mV", label="UavL")
+
+# ╔═╡ ab1e9f4c-c62c-489e-be60-b00958437e09
+plot(x,UavR,title="Ableitungen UavR nach Goldberger",xlabel="t / s",ylabel="Potentialdifferenz / mV", label="UavR")
+
+# ╔═╡ ce78178c-65f4-463a-be19-593bab504c5a
+plot(x,UavF,title="Ableitungen UavF nach Goldberger",xlabel="t / s",ylabel="Potentialdifferenz / mV", label="UavF")
 
 # ╔═╡ a98a84a8-b2fe-4568-b01b-a64e9f70c0f9
 unknownSignal = [0.625,0.5916562088412758,0.5778116051488343,0.612956290757708,0.6938960936342368,0.7864354761362946,0.8405695678789481,0.812748466803358,0.6857899410144274,0.47798904613241233,0.23749748510888158,0.024223360356142254,-0.11325934318296671,-0.15620141801526954,-0.12189830526818324,-0.05510259213302038,-0.008288058325304437,-0.01908167337415384,-0.09434581367239436,-0.2075790896682022,-0.3106926719428367,-0.35516607631961417,-0.31363335578325835,-0.1927574161564653,-0.03189844128691516,0.11195857368786999,0.18678323078502324,0.16619453653826788,0.05965892132838224,-0.09203088706101237,-0.23405974285718478,-0.3203964389257732,-0.33253493394687794,-0.2863308865806389,-0.22411095917569335,-0.19543167530321393,-0.2346434594217316,-0.34476740136948547,-0.49454927199100784,-0.6300262347578618,-0.695846924743373,-0.6574831514831796,-0.5150835611179317,-0.3032096044051817,-0.07659821965800839,0.11206311129232926,0.23303522219053574,0.29036701905275764,0.3181876428689616,0.36408836538211453,0.46666666666666634,0.6367674171277928,0.8504117573253006,1.056500836118978,1.1961767756602726,1.2258212665277899,1.1341307317527816,0.9461735960519826,0.7127755022929297,0.48971013062179836,0.3154243182253116,0.19661359689670205,0.10764282063613698,0.0039714811795514005,-0.15615531001008975,-0.3909747566035027,-0.6842666500315395,-0.9889351088958005,-1.2437457182236424,-1.3963239726807024,-1.4228803882261274,-1.3364833428148626,-1.1804844553147156,-1.0099064246545144,-0.8686266760924954,-0.771924902795315,-0.7016819350106605,-0.6161798164630797,-0.4702998977386398,-0.23753068467147276,0.07557857102584645,0.42872268001976105,0.7613380687384667,1.0147690444690478,1.1539325490350092,1.179507833610903,1.1256351052671563,1.0441656890809092,0.9821240068718627,0.9618621973942159,0.9722290504744722,0.9744239094258887,0.9200165842465837,0.7734850179556982,0.5297072089228804,0.21894735146186245,-0.10288389355162447,-0.3747374747119041,-0.5532222104336897,-0.6282397435821581,-0.6249999999999994,-0.5916562088412772,-0.5778116051488328,-0.6129562907577071,-0.6938960936342362,-0.7864354761362953,-0.8405695678789498,-0.8127484668033579,-0.6857899410144275,-0.4779890461324139,-0.23749748510888186,-0.024223360356143142,0.11325934318296627,0.15620141801526977,0.12189830526818313,0.0551025921330206,0.008288058325304215,0.01908167337415495,0.09434581367239259,0.20757908966820204,0.31069267194283523,0.3551660763196141,0.313633355783259,0.1927574161564653,0.0318984412869166,-0.11195857368786932,-0.1867832307850238,-0.16619453653826832,-0.059658921328381465,0.09203088706101137,0.234059742857185,0.32039643892577274,0.3325349339468781,0.28633088658063804,0.22411095917569562,0.1954316753032148,0.2346434594217325,0.3447674013694828,0.49454927199100523,0.6300262347578631,0.6958469247433725,0.6574831514831794,0.5150835611179326,0.30320960440518385,0.07659821965800895,-0.11206311129232849,-0.23303522219053607,-0.2903670190527548,-0.31818764286896223,-0.364088365382113,-0.46666666666666695,-0.6367674171277904,-0.8504117573253023,-1.056500836118978,-1.1961767756602697,-1.2258212665277899,-1.1341307317527825,-0.946173596051984,-0.7127755022929315,-0.4897101306217984,-0.31542431822531225,-0.19661359689670463,-0.10764282063613453,-0.003971481179553482,0.15615531001009003,0.3909747566035003,0.6842666500315404,0.9889351088957987,1.2437457182236398,1.3963239726807029,1.4228803882261276,1.3364833428148637,1.1804844553147156,1.0099064246545146,0.8686266760924969,0.7719249027953173,0.70168193501066,0.6161798164630807,0.47029989773863684,0.2375306846714741,-0.07557857102584778,-0.4287226800197589,-0.7613380687384621,-1.0147690444690474,-1.1539325490350092,-1.1795078336109028,-1.1256351052671563,-1.0441656890809106,-0.9821240068718629,-0.9618621973942169,-0.9722290504744715,-0.9744239094258895,-0.9200165842465817,-0.7734850179556991,-0.5297072089228825,-0.2189473514618645,0.10288389355161959,0.3747374747119049,0.553222210433688,0.6282397435821601]+0.0001*randn(200);
@@ -279,8 +245,67 @@ length(unknownSpectrum)
 # ╔═╡ 54bb0397-8921-4c30-9247-2051c007b3ce
 xscale=log10.(unknownSpectrum)
 
+# ╔═╡ 156b225a-419b-4e79-aab2-39853ae72b68
+indizes = findall(x->x>0,xscale)
+
+# ╔═╡ 0fbbaa4b-5107-487d-bfaa-392fdf765f55
+begin
+
+if !@isdefined(indizes)
+	Markdown.MD(Markdown.Admonition("danger", "Variable nicht definiert", [md"`indizes` scheint nicht definiert zu sein, ist vielleicht in der Definition ein Fehler aufgetreten?"]))
+elseif ismissing(indizes)
+	keep_working(md"Weisen Sie der Variable `indizes` einen Vektor mit den Indizes der Bestandteile des Signals zu.")
+elseif !(indizes isa Vector)
+	keep_working(md"`indizes` ist kein Vektor.")
+elseif indizes != [6,8,22]
+	keep_working(md"Das sind nicht die korrekten Indizes, prüfen Sie bitte Ihren Code")
+else
+	correct(md"Das sieht gut aus, auf zur nächsten Aufgabe!")
+end
+end
+
+# ╔═╡ 81bef4bd-b950-4c43-8761-e73a44431d4e
+freqs = (indizes.-1)*5
+
+# ╔═╡ 3efd7fef-910b-400d-a656-62fe2a15fc4e
+begin
+
+if !@isdefined(freqs)
+	Markdown.MD(Markdown.Admonition("danger", "Variable nicht definiert", [md"`freqs` scheint nicht definiert zu sein, ist vielleicht in der Definition ein Fehler aufgetreten?"]))
+elseif ismissing(freqs)
+	keep_working(md"Weisen Sie der Variable `freqs` einen Vektor mit den Frequenzen der Bestandteile des Signals zu.")
+elseif !(freqs isa Vector)
+	keep_working(md"`freqs` ist kein Vektor.")
+elseif !isapprox(freqs,[25,35,105])
+	keep_working(md"Das sind nicht die korrekten Frequenzen, prüfen Sie bitte Ihren Code!")
+else
+	correct(md"Das könnte soweit stimmen, auf zur nächsten Aufgabe!")
+end
+end
+
 # ╔═╡ e7fb5254-de85-461e-ac8d-fc32844e4383
 plot(unknownSpectrum, yscale=:log10, label="Amplitudenspektrum von unknownSignal", ylims=(1e-1,0.2e3))
+
+# ╔═╡ 4b8641e0-c39c-443b-8681-210d0667d8c4
+amps = unknownSpectrum[indizes]./100
+
+# ╔═╡ 7ed7ab14-072b-430f-9dcc-f0d3e84017d5
+begin
+
+if !@isdefined(amps)
+	Markdown.MD(Markdown.Admonition("danger", "Variable nicht definiert", [md"`amps` scheint nicht definiert zu sein, ist vielleicht in der Definition ein Fehler aufgetreten?"]))
+elseif ismissing(amps)
+	keep_working(md"Weisen Sie der Variable `amps` einen Vektor mit den Amplituden der Bestandteile des Signals zu.")
+elseif !(amps isa Vector)
+	keep_working(md"`amps` ist kein Vektor.")
+elseif isapprox(amps,[66+2/3,62.5,20], atol=0.1)
+	keep_working(md"Sie haben die richtigen Amplituden gefunden, allerdings stimmt die Skalierung noch nicht. Überlegen Sie, mit welchem Wert Sie Ihre Amplituden noch skalieren müssen, um auf den richtigen Wert zu kommen!")
+elseif isapprox(amps, [66+2/3,62.5,20]/100, atol=0.001)
+	correct(md"Das stimmt! Auf zur nächsten Aufgabe!")
+else 
+	keep_working(md"Das sind noch nicht die richtigen Amplituden, prüfen Sie bitte noch einmal Ihren Code!")
+end
+end
 
 # ╔═╡ 998bea00-a049-46ab-b5f4-2025afb8d97b
 unknownSignal2= [unknownSignal; unknownSignal; unknownSignal[1:40]] + 0.001*randn(440);
@@ -288,8 +313,14 @@ unknownSignal2= [unknownSignal; unknownSignal; unknownSignal[1:40]] + 0.001*rand
 # ╔═╡ 1d6b9dd3-db6d-489c-beff-965013479936
 plot(range(0, length=length(unknownSignal2))/1e3, unknownSignal2, xlabel = "Zeit / s", ylabel="Amplitude / V", label="unknownSignal2", legend_position=:bottomleft)
 
+# ╔═╡ a4d02d71-2f2b-4f12-b517-ed086d704293
+length(unknownSignal2)
+
 # ╔═╡ 61f3eeb1-c968-4f05-9c6d-494067a5005a
 unknownSpectrum2 = abs.(rfft(unknownSignal2))
+
+# ╔═╡ 1a24ae05-1771-49dd-9b5e-258844f5415c
+xscale2=log10.(unknownSpectrum2)
 
 # ╔═╡ 77a50a81-f877-45c8-8ac9-ad9dfeae4a15
 plot(unknownSpectrum2, yscale=:log10, label="Amplitudenspektrum von unknownSignal2", ylims=(1e-1,0.2e3))
@@ -334,6 +365,7 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
 InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 Markdown = "d6f4376e-aef5-505a-96c1-9c027394607a"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoTeachingTools = "661c6b06-c737-4d37-b85c-46df65de6f69"
@@ -341,6 +373,7 @@ PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
 FFTW = "~1.5.0"
+JLD2 = "~0.4.29"
 Plots = "~1.36.5"
 PlutoTeachingTools = "~0.2.3"
 PlutoUI = "~0.7.48"
@@ -352,7 +385,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.3"
 manifest_format = "2.0"
-project_hash = "f9cd5f2fd377d6f6d5b4a1aebd6662e86d744e3b"
+project_hash = "0d77242f6cf0098b95f227dfa926b85b711edd05"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra"]
@@ -521,6 +554,12 @@ git-tree-sha1 = "c6033cc3892d0ef5bb9cd29b7f2f0331ea5184ea"
 uuid = "f5851436-0d7a-5f13-b9de-f02708fd171a"
 version = "3.3.10+0"
 
+[[deps.FileIO]]
+deps = ["Pkg", "Requires", "UUIDs"]
+git-tree-sha1 = "7be5f99f7d15578798f338f5433b6c432ea8037b"
+uuid = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+version = "1.16.0"
+
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
@@ -580,9 +619,9 @@ version = "0.21.0+0"
 
 [[deps.Glib_jll]]
 deps = ["Artifacts", "Gettext_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Libiconv_jll", "Libmount_jll", "PCRE2_jll", "Pkg", "Zlib_jll"]
-git-tree-sha1 = "fb83fbe02fe57f2c068013aa94bcdf6760d3a7a7"
+git-tree-sha1 = "d3b3624125c1474292d0d8ed0f65554ac37ddb23"
 uuid = "7746bdde-850d-59dc-9ae8-88ece973131d"
-version = "2.74.0+1"
+version = "2.74.0+2"
 
 [[deps.Graphite2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -650,6 +689,12 @@ version = "0.1.8"
 git-tree-sha1 = "7fd44fd4ff43fc60815f8e764c0f352b83c49151"
 uuid = "92d709cd-6900-40b7-9082-c6be49f344b6"
 version = "0.1.1"
+
+[[deps.JLD2]]
+deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "Pkg", "Printf", "Reexport", "TranscodingStreams", "UUIDs"]
+git-tree-sha1 = "ec8a9c9f0ecb1c687e34c1fda2699de4d054672a"
+uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+version = "0.4.29"
 
 [[deps.JLFzf]]
 deps = ["Pipe", "REPL", "Random", "fzf_jll"]
@@ -762,9 +807,9 @@ version = "1.42.0+0"
 
 [[deps.Libiconv_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "42b62845d70a619f063a7da093d995ec8e15e778"
+git-tree-sha1 = "c7cb1f5d892775ba13767a87c7ada0b980ea0a71"
 uuid = "94ce4f54-9a6c-5748-9c1c-f9c7231a4531"
-version = "1.16.1+1"
+version = "1.16.1+2"
 
 [[deps.Libmount_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1392,6 +1437,7 @@ version = "1.4.1+0"
 """
 
 # ╔═╡ Cell order:
+# ╟─f2c8407d-02d9-4d98-a3af-66cb16dadbac
 # ╟─29220e02-6749-4040-abcf-76354fa64606
 # ╟─fff659d2-1a29-4cbc-9dd8-ae9a99625a7c
 # ╟─c40b91ea-9323-4b8d-99a5-f3b052dd6378
@@ -1413,7 +1459,7 @@ version = "1.4.1+0"
 # ╠═b5923828-8793-4a3c-a039-5e777ca95351
 # ╠═54bb0397-8921-4c30-9247-2051c007b3ce
 # ╟─bef130e0-f055-48b4-b937-d91ff1f0346b
-# ╠═e7fb5254-de85-461e-ac8d-fc32844e4383
+# ╟─e7fb5254-de85-461e-ac8d-fc32844e4383
 # ╟─00de484e-e151-459b-9b1a-a3bb10633ec2
 # ╠═156b225a-419b-4e79-aab2-39853ae72b68
 # ╟─0fbbaa4b-5107-487d-bfaa-392fdf765f55
@@ -1425,34 +1471,42 @@ version = "1.4.1+0"
 # ╠═941dbf87-c50c-4666-80b8-40fc3e0e39e5
 # ╟─8eda52fb-35a0-4b2a-a002-d45305892b79
 # ╟─d0e09c1c-21b3-4c5e-9b46-a2bdc3ac90fb
-# ╠═63160cdf-debc-448a-a5c7-5ccebebf91b8
-# ╠═24cd3f12-17a4-4ffd-a799-a5e6166a9703
-# ╠═e1812c5c-0541-4dfe-9725-df527b134dc5
 # ╟─8c04101a-54e1-4c1e-9e38-bdbc19ac6e0a
 # ╟─da677700-514b-4d13-9f80-fd422fa24aa5
 # ╟─ef48ac2e-939b-4d70-bebb-baa9fad5f189
 # ╟─21922b89-edcf-4d23-a69a-4935d6285a48
 # ╟─1d6b9dd3-db6d-489c-beff-965013479936
+# ╟─a4d02d71-2f2b-4f12-b517-ed086d704293
 # ╟─53076134-fb4a-421d-b1b8-9687d0d1ea1d
-# ╠═61f3eeb1-c968-4f05-9c6d-494067a5005a
+# ╟─61f3eeb1-c968-4f05-9c6d-494067a5005a
+# ╟─1a24ae05-1771-49dd-9b5e-258844f5415c
 # ╟─77a50a81-f877-45c8-8ac9-ad9dfeae4a15
 # ╟─bed0984d-9a77-4759-b4e5-14417b977389
-# ╠═8e253fba-d4a4-4ce0-98be-a94b6e1c54d7
-# ╠═5cee50ff-0b30-489f-b352-911ee2204210
+# ╟─8e253fba-d4a4-4ce0-98be-a94b6e1c54d7
+# ╟─5cee50ff-0b30-489f-b352-911ee2204210
 # ╟─6d9d2d56-404b-4dc9-8bcf-e6f84d191dfb
 # ╟─47923c46-4f7f-4468-ae06-9c588a6a2d59
-# ╠═7c859cad-2317-4fc4-950a-349bf51e4f29
+# ╟─7c859cad-2317-4fc4-950a-349bf51e4f29
 # ╟─800bdedf-2da8-4eb0-9533-8d4008225fa4
-# ╠═9fb9da54-bc13-4835-8c19-68fa9a955bc1
+# ╟─9fb9da54-bc13-4835-8c19-68fa9a955bc1
 # ╟─958e089e-a8b6-4168-8e6c-c784a7831c5d
 # ╟─d095296d-8147-458d-bdfc-d6863b46fd22
-# ╠═589ef964-b782-4684-b6fb-097180fb9ed9
 # ╠═c015b9c8-e2ac-4663-8506-a3f64e1f5681
 # ╟─93c43ca3-2349-4113-97ac-103f2227dc89
 # ╟─790e3621-d393-4f41-8699-a490f820e21a
-# ╠═51444c9d-0094-4d95-bc6c-7af71de5adef
-# ╠═b9e0194f-2318-439e-b060-ea9beabd870d
-# ╠═4107ee94-1245-4447-b339-731275f77634
+# ╠═b9badbec-b53d-4621-b37e-24e1bc3a19fe
+# ╟─b9e0194f-2318-439e-b060-ea9beabd870d
+# ╟─8bd8a074-e7c4-4c5c-822f-31ece229db3d
+# ╟─9780d677-990b-4f1d-8fdb-ff245cfe93b0
+# ╟─24d67c06-df55-48df-91f6-8504c1053f09
+# ╟─8a8e8af6-de00-4433-afce-16980169f823
+# ╟─59cc9645-d4d6-472f-a36c-b17f0f4c7055
+# ╟─48ce278f-2556-458e-8412-7f2c95ffe28c
+# ╟─cea11ce5-dbab-4f19-a1db-f743d32c98df
+# ╟─301c5b78-aee9-4139-8731-deb31ca33315
+# ╟─9cf4ca75-5b6e-4bdc-8891-66eabeba3ec3
+# ╟─ab1e9f4c-c62c-489e-be60-b00958437e09
+# ╟─ce78178c-65f4-463a-be19-593bab504c5a
 # ╟─998bea00-a049-46ab-b5f4-2025afb8d97b
 # ╟─a98a84a8-b2fe-4568-b01b-a64e9f70c0f9
 # ╟─a2d6aac3-523d-45a1-87e2-38b41d580c9d
